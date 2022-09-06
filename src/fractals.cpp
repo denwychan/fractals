@@ -1,4 +1,8 @@
-// This is the CPP file you will edit and turn in. (TODO: Remove this comment!)
+/*
+ * This is is implementation of the recursive functions for
+ * a. Sierpinski triangle as a fractal design
+ * b. Flood fill which allows the user to block fill a continuous area with a colour on a graphic
+ */
 
 #include "fractals.h"
 #include "error.h"
@@ -9,6 +13,7 @@ using namespace std;
 int floodFillHelper(
         GWindow& window, int x, int y, int color, int backgroundColor, int pixelsChanged);
 
+// Sierpinski Triangle fractal
 void drawSierpinskiTriangle(GWindow& window, double x, double y, double size, int order) {
     if (order == 0) { // Base case: draw nothing if the order is 0
         cout << "I'm done drawing" << endl;
@@ -27,24 +32,25 @@ void drawSierpinskiTriangle(GWindow& window, double x, double y, double size, in
     }
 }
 
+// Flood fill
 int floodFill(GWindow& window, int x, int y, int color) {
     int backgroundColor = window.getPixel(x, y);
     int pixelsChanged  = 0;
-    floodFillHelper(window, x, y, color, backgroundColor, pixelsChanged);
-    return 0;   // this is only here so it will compile
+    pixelsChanged = floodFillHelper(window, x, y, color, backgroundColor, pixelsChanged);
+    cout << "Pixels changed = " << pixelsChanged << endl;
+    return 0;
 }
 
 int floodFillHelper(
         GWindow& window, int x, int y, int color, int backgroundColor, int pixelsChanged) {
-    // Base case: return 0 if the flood fill colour is the same as the background colour
-    if (color == backgroundColor) {
+    if (color == backgroundColor) {// Base case: return 0 if the flood fill colour is the same
+        // as the background colour
         return 0;
-    } else if (x < 0 || y < 0 || !window.inCanvasBounds(x, y)) {
-    // Base case: throw exception if x or y are negative, or if the pixel is out of bound
+    } else if (x < 0 || y < 0 || !window.inCanvasBounds(x, y)) {// Base case: throw exception if x
+        // or y are negative, or if the pixel is out of bound
         error("x and y must be a positive number and be in bounds of canvas");
-    } else if (window.getPixel(x, y) != backgroundColor) {
-    // Base case: stop exploring if the background colour changes
-        cout << "Number of pixels change" << pixelsChanged << endl;
+    } else if (window.getPixel(x, y) != backgroundColor) {// Base case: stop exploring if the
+        // background colour changes
         return pixelsChanged;
     } else {
         // Colour the pixel
